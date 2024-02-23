@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Редактирование книги{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Редактирование книги</h1>
+    {{ form_start(form, {'attr': {'class': 'form_box'}}) }}
+        <div class="form_content">
+            {{ form_row(form.title, {'label': 'Заголовок'}) }}
+            {{ form_row(form.author, {'label': 'Автор'}) }}
+            {{ form_row(form.description, {'label': 'Описание'}) }}
+
+            {% set csrfToken = form._token.vars.value %}
+
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
+    {{ form_end(form) }}
+
+    <form action="{{ path('book_delete', {'id': book.id}) }}" method="post" onsubmit="return confirm('Вы уверены?');">
+        <input type="hidden" name="_token" value="{{ csrfToken }}">
+        <button type="submit" class="btn btn-danger">Удалить книгу</button>
+    </form>
+{% endblock %}
+{% block extra_stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/book/edit.css') }}" />
+{% endblock %}

@@ -1,5 +1,21 @@
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+    resource: '../src/Controller/'
+    type: annotation
+home:
+    path: /
+    controller: App\Controller\Controller::home
+book_list:
+    path: /list/book
+    controller: App\Controller\Controller::list
+
+book_edit:
+    path: /list/edit/{id}
+    controller: App\Controller\Controller::edit
+
+book_create:
+    path: /list/create
+    controller: App\Controller\Controller::create
+
+book_delete:
+    path: /list/delete/{id}
+    controller: App\Controller\Controller::delete
