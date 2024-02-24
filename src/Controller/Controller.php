@@ -1,8 +1,9 @@
 <?php
 // src/Controller/Controller.php
+
 namespace App\Controller;
-use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+use App\Service\BookService;
 use App\Form\BookType;
 use App\Entity\Book;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,11 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Controller extends AbstractController
 {
-    private $entityManager;
+    private $bookService;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(BookService $bookService)
     {
-        $this->entityManager = $entityManager;
+        $this->bookService = $bookService;
     }
 
     #[Route('/', name: 'home')]
@@ -25,15 +26,17 @@ class Controller extends AbstractController
     {
         return $this->render('base.html.twig');
     }
+
     #[Route('/list/book', name: 'book_list')]
     public function list(): Response
     {
-        $book = $this->entityManager->getRepository(Book::class)->findAll();
+        $book = $this->bookService->getAllBooks();
 
         return $this->render('list/index.html.twig', [
             'book' => $book,
         ]);
     }
+
     #[Route('/list/create', name: 'book_create')]
     public function create(Request $request): Response
     {
@@ -42,8 +45,7 @@ class Controller extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($book);
-            $this->entityManager->flush();
+            $this->bookService->createBook($book);
 
             return $this->redirectToRoute('book_list');
         }
@@ -52,31 +54,31 @@ class Controller extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[Route('/list/edit/{id}', name: 'book_edit')]     
-    public function edit(Request $request, Book $book, EntityManagerInterface $entityManager): Response     
-    {         
-        $form = $this->createForm(BookType::class, $book);         
-        $form->handleRequest($request);          
 
-        if ($form->isSubmitted() && $form->isValid()) {             
-            $entityManager->flush();  // Используйте внедренный EntityManagerInterface           
-            return $this->redirectToRoute('book_list');         
-        }          
+    #[Route('/list/edit/{id}', name: 'book_edit')]
+    public function edit(Request $request, Book $book): Response
+    {
+        $form = $this->createForm(BookType::class, $book);
+        $form->handleRequest($request);
 
-        return $this->render('list/edit.html.twig', [             
-            'form' => $form->createView(),             
-            'book' => $book,          
-        ]);     
-    } 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->bookService->updateBook($book);
 
-    #[Route('/list/delete/{id}', name: 'book_delete', methods: ['POST'])]     
-    #[ParamConverter("book", class:"App\Entity\Book")]     
-    public function delete(Book $book, EntityManagerInterface $entityManager): RedirectResponse     
-    {         
-        $entityManager->remove($book);         
-        $entityManager->flush();              
+            return $this->redirectToRoute('book_list');
+        }
 
-        return $this->redirectToRoute('book_list');     
-    } 
-    
+        return $this->render('list/edit.html.twig', [
+            'form' => $form->createView(),
+            'book' => $book,
+        ]);
+    }
+
+    #[Route('/list/delete/{id}', name: 'book_delete', methods: ['POST'])]
+    public function delete(Book $book): RedirectResponse
+    {
+        $this->bookService->deleteBook($book);
+
+        return $this->redirectToRoute('book_list');
+    }
 }
+
