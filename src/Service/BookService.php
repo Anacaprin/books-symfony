@@ -36,4 +36,21 @@ class BookService
         $this->entityManager->remove($book);
         $this->entityManager->flush();
     }
+    public function searchBooks($searchTerm)
+    {
+        $queryBuilder = $this->entityManager->getRepository(Book::class)->createQueryBuilder('b');
+    
+        $query = $queryBuilder
+            ->where('b.title LIKE :searchTerm OR b.author LIKE :searchTerm')
+            ->setParameter('searchTerm', '%'.$searchTerm.'%')
+            ->getQuery();
+    
+        $result = $query->getResult();
+    
+        if (empty($result)) {
+            return "Книги не найдены";
+        }
+    
+        return $result;
+    }
 }

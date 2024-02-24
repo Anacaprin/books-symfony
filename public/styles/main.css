@@ -164,3 +164,39 @@ footer {
 #header .nav-list ul li:hover a {
     color: crimson;
 }
+
+.search-bar {
+    background: #fff;
+    width: max-content;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.search-bar>form {display: flex;width: 400px;flex-direction: row;justify-content: space-between;align-items: center;}
+
+.search-bar>form>input {
+    height: 38px;
+    border: 0;
+    outline: 0;
+    width: 100%;
+}
+
+.search-bar>form>button {
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #5d5d5d;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+}
+
+.search-bar>form>button:hover {
+    background-color: #648568;
+}
+
+.alert.alert-warning {
+    font-size: 16px;
+    color: #fff;
+}

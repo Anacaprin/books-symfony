@@ -4,6 +4,13 @@
 {% endblock %} 
 {% block body %}
 <h1 class="page-title">Список Книг</h1>
+{% if app.flashes('warning') is not empty %}
+    <div class="alert alert-warning">
+        {% for message in app.flashes('warning') %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
 <div class="list">
     <ul class="nav__list">
         {% for singleBook in book %}

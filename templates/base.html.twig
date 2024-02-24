@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
     <meta charset="UTF-8">
     <title>{% block title %}Добро пожаловать{% endblock %}</title>
     {% block stylesheets %}
@@ -8,39 +8,45 @@
         <link rel="stylesheet" href="{{ asset('styles/@fortawesome/fontawesome-free/css/all.min.css') }}">
         {% block extra_stylesheets %}{% endblock %}
     {% endblock %}
-    </head>
-    <body>
-    <div class="wrapper">
-        <section id="header">
-            <div class="header container">
-                <div class="nav-bar">
-                    <div class="brand">
-                        <a href="{{ path('home') }}">
-                            <h1><span>B</span>ook<span>S</span>hop</h1>
-                        </a>
-                    </div>
-                    <div class="nav-list">
-                        <ul>
-                            <li><a href="{{ path('home') }}">Главная</a></li>
-                            <li><a href="{{ path('book_list') }}">Список книг</a></li></li>
-                            <li><a href="{{ path('book_create') }}">Добавить книгу</a></li>
-                        </ul>
-                    </div>
+</head>
+<body>
+<div class="wrapper">
+    <section id="header">
+        <div class="header container">
+            <div class="nav-bar">
+                <div class="brand">
+                    <a href="{{ path('home') }}">
+                        <h1><span>B</span>ook<span>S</span>hop</h1>
+                    </a>
+                </div>
+                <div class="search-bar">
+                    <form action="{{ path('book_list') }}" method="get">
+                        <input type="text" name="search" placeholder="Поиск по заголовку или автору">
+                        <button type="submit">Поиск</button>
+                    </form>
+                </div>
+                <div class="nav-list">
+                    <ul>
+                        <li><a href="{{ path('home') }}">Главная</a></li>
+                        <li><a href="{{ path('book_list') }}">Список книг</a></li></li>
+                        <li><a href="{{ path('book_create') }}">Добавить книгу</a></li>
+                    </ul>
                 </div>
             </div>
-        </section>
-        <div class="content">
-            {% block body %}
-                <h1 class="main-heading">Добро пожаловать на нашу главную страницу!</h1>
-                <p class="main-description">Здесь вы можете найти множество интересных книг и добавить свои собственные!</p>
-            {% endblock %}
         </div>
-        <footer>
-        <p class="footer-text">© 2024 Все права защищены.</p>
-        </footer>
+    </section>
+    <div class="content">
+        {% block body %}
+            <h1 class="main-heading">Добро пожаловать на нашу главную страницу!</h1>
+            <p class="main-description">Здесь вы можете найти множество интересных книг и добавить свои собственные!</p>
+        {% endblock %}
     </div>
-    {% block javascripts %}
-        <!-- скрипты -->
-    {% endblock %}
-    </body>
+    <footer>
+        <p class="footer-text">© 2024 Все права защищены.</p>
+    </footer>
+</div>
+{% block javascripts %}
+    <!-- скрипты -->
+{% endblock %}
+</body>
 </html>
