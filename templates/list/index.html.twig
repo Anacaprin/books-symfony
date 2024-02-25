@@ -1,36 +1,37 @@
 {% extends 'base.html.twig' %} 
+
 {% block title %} 
-Список Книг 
+    Список Книг 
 {% endblock %} 
+
 {% block body %}
-<h1 class="page-title">Список Книг</h1>
-{% if app.flashes('warning') is not empty %}
-    <div class="alert alert-warning">
-        {% for message in app.flashes('warning') %}
-            {{ message }}
-        {% endfor %}
-    </div>
-{% endif %}
-<div class="list">
-    <ul class="nav__list">
-        {% for singleBook in book %}
-        <li>
-            <input id="{{ singleBook.id }}" type="checkbox" hidden/>
-            <label for="{{ singleBook.id }}">
-                <span class="fa fa-angle-right"></span>
-                {{ singleBook.title }} - {{ singleBook.author }}
-            </label>
-            <ul class="group-list">
+    <h1 class="page-title">Список Книг</h1>
+    <div class="list">
+        <ul class="nav__list">
+            {% for message in app.flashes('warning') %}
+                <div class="alert alert-warning">
+                    {{ message }}
+                </div>
+            {% endfor %}   
+            {% for singleBook in book %}
                 <li>
-                    <p class="group-list-p">{{ singleBook.description }}</p>
-                    <a class="edit_link" href="{{ path('book_edit', {'id': singleBook.id}) }}">Редактировать книгу "{{ singleBook.title }}"</a>
+                    <input id="{{ singleBook.id }}" type="checkbox" hidden/>
+                    <label for="{{ singleBook.id }}">
+                        <span class="fa fa-angle-right"></span>
+                        {{ singleBook.title }} - {{ singleBook.author }}
+                    </label>
+                    <ul class="group-list">
+                        <li>
+                            <p class="group-list-p">{{ singleBook.description }}</p>
+                            <a class="edit_link" href="{{ path('book_edit', {'id': singleBook.id}) }}">Редактировать книгу "{{ singleBook.title }}"</a>
+                        </li>
+                    </ul>
                 </li>
-            </ul>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %} 
+
 {% block extra_stylesheets %}
     <link rel="stylesheet" href="{{ asset('styles/book/index.css') }}" />
 {% endblock %}

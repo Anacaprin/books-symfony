@@ -27,14 +27,13 @@ class Controller extends AbstractController
         return $this->render('base.html.twig');
     }
 
-    #[Route('/list/book', name: 'book_list')]
     public function list(Request $request): Response
     {
         $searchTerm = $request->query->get('search', '');
 
         $book = $this->bookService->searchBooks($searchTerm);
 
-        if (is_string($book) && $book === "Книги не найдены") {
+        if (empty($book)) {
             $this->addFlash('warning', 'Книг по вашему запросу не найдено.');
             $book = [];
         }
